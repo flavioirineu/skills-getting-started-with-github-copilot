@@ -65,3 +65,17 @@ def signup_for_activity(activity_name: str, email: str):
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
+
+    @app.post("/activities")
+    def add_activity(activity_name: str, description: str, schedule: str, max_participants: int):
+        """Add a new activity"""
+        if activity_name in activities:
+            raise HTTPException(status_code=400, detail="Activity already exists")
+        
+        activities[activity_name] = {
+            "description": description,
+            "schedule": schedule,
+            "max_participants": max_participants,
+            "participants": []
+        }
+        return {"message": f"Activity {activity_name} created successfully"}
